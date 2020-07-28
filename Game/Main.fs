@@ -9,7 +9,11 @@ module Main
 
 //open GameModel
 
-        
+    //type Input<'left, 'right, 'forward, 'backward> =
+                    //|ULeft of Left: Exit
+                    //|URight of Right: Exit
+                    //|UForward of Forward: Exit
+                    //|UBackward of Backward: Exit    
 
     let bind processFunc lastResult =
         match lastResult with
@@ -23,7 +27,7 @@ module Main
         Success (processFunc input)
 
     let getRoom world roomId =
-        match world.Rooms.TryFind roomId with
+        match world.Rooms.TryFind  roomId with
         | Some room -> Success room
         | None -> Failure "Room does not exist!"
 
@@ -48,14 +52,15 @@ module Main
 
 
     let forward ({ Forward = northExit }: Exits) = northExit
-    let backward ({ Backward = southExit }: Exits) = southExit
+    let backward ({ Back = southExit }: Exits) = southExit
     let right ({ Right = eastExit }: Exits) = eastExit
     let left ({ Left = westExit }: Exits) = westExit
+    let noInput ({NoInput = nExit}: Exits) = nExit
 
   
 
-    let getExit direction exits =
-        match (direction exits) with
+    let getExit direction Exits =
+        match (direction Exits) with
         | UnlockedExit (_, roomId) -> Success roomId
         | LockedExit (_, _, _) -> Failure "There is a locked door in that direction."
         | NoExit (_) -> Failure "There is no room in that direction."
@@ -72,16 +77,92 @@ module Main
         match result with
         | Success s -> printf "%s" s
         | Failure f -> printf "%s" f
+        
+        //world.Player.Location
+        //world
+        //|> getRoom world
+        //|> switch (setCurrentRoom world)
 
 
-    let userInput =
-        let raw = Console.ReadLine()
-        if String.Compare("left", raw, StringComparison.InvariantCultureIgnoreCase) = 0 then
-            forward
-            else right
+
+    //let displayResult result =
+        //match result with
+        //| Success s -> printf "%s" s
+        //| Failure f -> printf "%s" f
 
 
-    gameWorld
-    |> describeCurrentRoom
-    |> ignore
-    
+
+    //let userInput raw=
+        ////let raw = System.Console.ReadLine()
+        //match raw with
+        //|ULeft left -> user
+        //|URight right
+        //|UForward forward
+        //|UBackward backward
+
+
+    //let userInput = 
+        //let raw = System.Console.ReadLine()
+        //if raw.Contains "left" then
+            //if String.Compare("left", raw, StringComparison.InvariantCultureIgnoreCase) = 0 then
+            ////forward
+            //printf "works"
+            //else printf "does not work"//right 
+
+
+    //let nextmove unit world=
+        //unit
+        //|>
+        //switch (setCurrentRoom world)
+
+
+
+    let usermove = 
+        printf "Please enter a command: "
+        let mutable raw = System.Console.ReadLine()
+        //let input = raw
+        //if raw.Contains 
+        let (|InvariantEqual|_|) (str: string) raw = 
+          if String.Compare(str, raw, StringComparison.OrdinalIgnoreCase) = 0
+            then Some() else None
+
+        match raw with
+        | InvariantEqual "move left" -> left
+        | InvariantEqual "move right" -> right
+        | InvariantEqual "move forward" -> forward
+        | InvariantEqual "move backward" -> backward
+        | _ -> noInput
+
+        //let raw = System.Console.ReadLine()
+        //input = System.Console.ReadLine()
+        //| _ -> printfn "Please enter a valid command"
+        //raw = unit
+
+
+
+
+    //gameWorld
+    //|> describeCurrentRoom
+    //|> displayResult
+    //gameWorld
+    //|> move usermove
+    //|> bind describeCurrentRoom
+    //|> displayResult
+
+
+    //|> nend (nextmove)
+    //|> nextmove ()
+    //|> move left
+    //|> bind describeCurrentRoom
+   //|> bind displayResult
+    //|> move right
+    //st
+    //|> print
+   // for i in allRooms do
+   //    World
+   //|    > describeCurrentRoom
+   //|    > displayResult
+   //g    ameWorld
+   //|    > move usermove
+   //|    > bind describeCurrentRoom
+   //|    > displayResult

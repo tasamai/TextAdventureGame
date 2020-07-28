@@ -8,5 +8,7 @@
     <Compile Include="InitialState.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="Main.fs" />
+    <None Include="Script.fsx" />
+    <Compile Include="Fin.fs" />
   </ItemGroup>
 </Project>
