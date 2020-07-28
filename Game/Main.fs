@@ -138,9 +138,38 @@ module Main
         //| _ -> printfn "Please enter a valid command"
         //raw = unit
 
+    //example code from: https://forums.fsharp.org/t/basic-f-console-ui-program-loop/1216/3
+    module CommandLineExample =
+        let printPrompt state = 
+            printfn "Current State: %s" state
+            printf "command:>"
 
+        let getCommandLineInput = Console.ReadLine
 
+        let writeError value =
+            printfn "ERROR - No Match\nYou typed: %s" value
 
+        let writeMatch value =
+            printfn "Matched: %s" value
+         
+        let processCommandLineInput state commandLineInput =
+            match commandLineInput with
+            | "a" -> writeMatch "a"; Some "Ivan"
+            | "b" -> writeMatch "b"; Some "Bob"
+            | "c" -> writeMatch "c"; Some state
+            | "exit" | "quit" -> None
+            | _ -> writeError commandLineInput; Some state
+
+        let rec progLoop state =
+            state |> printPrompt
+            let updated = 
+                getCommandLineInput()
+                |> processCommandLineInput state
+            match updated with
+            | Some newState -> progLoop newState
+            | None -> Environment.Exit 55
+
+    
     //gameWorld
     //|> describeCurrentRoom
     //|> displayResult

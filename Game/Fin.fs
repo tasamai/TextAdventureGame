@@ -5,7 +5,19 @@ open Main
 
 [<EntryPoint>]
 let main argv =
+    
+    "NoUser" |> CommandLineExample.progLoop 
+    0
+    // gameWorld
+    // |> move usermove
+    // |> bind describeCurrentRoom
+    // |> displayResult
+    // gameWorld
+    // |> move usermove
+    // |> bind describeCurrentRoom
+    // |> displayResult
 
+    // 0
     //for i in allRooms do
 
         //while i < 10 do
@@ -48,13 +60,4 @@ let main argv =
         //|> (move usermove)
         //|> bind describeCurrentRoom
         //|> displayResult
-    gameWorld
-    |> move usermove
-    |> bind describeCurrentRoom
-    |> displayResult
-    gameWorld
-    |> move usermove
-    |> bind describeCurrentRoom
-    |> displayResult
-
-    0
+    
