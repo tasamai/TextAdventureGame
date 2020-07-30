@@ -117,58 +117,55 @@ module Main
 
 
 
-    let usermove = 
-        printf "Please enter a command: "
-        let mutable raw = System.Console.ReadLine()
-        //let input = raw
-        //if raw.Contains 
+    let usermove world moveString = 
+        
         let (|InvariantEqual|_|) (str: string) raw = 
           if String.Compare(str, raw, StringComparison.OrdinalIgnoreCase) = 0
             then Some() else None
 
-        match raw with
+        match moveString with
         | InvariantEqual "move left" -> left
         | InvariantEqual "move right" -> right
         | InvariantEqual "move forward" -> forward
         | InvariantEqual "move backward" -> backward
         | _ -> noInput
+        |> fun d -> move d world
 
-        //let raw = System.Console.ReadLine()
-        //input = System.Console.ReadLine()
-        //| _ -> printfn "Please enter a valid command"
-        //raw = unit
+
+    let rec progLoop world =
+        printfn "Current State: %A" world
+        let updated = 
+            Console.ReadLine()
+            |> usermove world
+        match updated with
+        | Success newState -> progLoop newState
+        | Failure e -> printfn "Error: %s" e //Environment.Exit 55
+
+
 
     //example code from: https://forums.fsharp.org/t/basic-f-console-ui-program-loop/1216/3
-    module CommandLineExample =
-        let printPrompt state = 
-            printfn "Current State: %s" state
-            printf "command:>"
+    // module CommandLineExample =
+    //     let printPrompt state = 
+    //         printfn "Current State: %s" state
+    //         printf "command:>"
 
-        let getCommandLineInput = Console.ReadLine
+        // let getCommandLineInput = Console.ReadLine
 
-        let writeError value =
-            printfn "ERROR - No Match\nYou typed: %s" value
+        // let writeError value =
+        //     printfn "ERROR - No Match\nYou typed: %s" value
 
-        let writeMatch value =
-            printfn "Matched: %s" value
+        // let writeMatch value =
+        //     printfn "Matched: %s" value
          
-        let processCommandLineInput state commandLineInput =
-            match commandLineInput with
-            | "a" -> writeMatch "a"; Some "Ivan"
-            | "b" -> writeMatch "b"; Some "Bob"
-            | "c" -> writeMatch "c"; Some state
-            | "exit" | "quit" -> None
-            | _ -> writeError commandLineInput; Some state
+        // let processCommandLineInput state commandLineInput =
+        //     match commandLineInput with
+        //     | "a" -> writeMatch "a"; Some "Ivan"
+        //     | "b" -> writeMatch "b"; Some "Bob"
+        //     | "c" -> writeMatch "c"; Some state
+        //     | "exit" | "quit" -> None
+        //     | _ -> writeError commandLineInput; Some state
 
-        let rec progLoop state =
-            state |> printPrompt
-            let updated = 
-                getCommandLineInput()
-                |> processCommandLineInput state
-            match updated with
-            | Some newState -> progLoop newState
-            | None -> Environment.Exit 55
-
+    
     
     //gameWorld
     //|> describeCurrentRoom

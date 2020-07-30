@@ -6,7 +6,7 @@ open Main
 [<EntryPoint>]
 let main argv =
     
-    "NoUser" |> CommandLineExample.progLoop 
+    gameWorld |> progLoop 
     0
     // gameWorld
     // |> move usermove
